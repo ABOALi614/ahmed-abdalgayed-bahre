@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشركة البحرية | خدمات بحرية ولوجستية متكاملة</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  :root{
+    --deep-navy:#0A2740;
+    --mid-blue:#123A5C;
+    --light-blue:#2E6E9E;
+    --foam:#F4F2EC;
+    --sand-gold:#C9974A;
+    --sand-gold-light:#E2B97A;
+    --ink:#0A2740;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Almarai', sans-serif;
+    background:var(--foam);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.font-display{ font-family:'Cairo', sans-serif; }
+
+  /* ===== Nautical chart texture ===== */
+  .chart-grid{
+    background-image:
+      linear-gradient(rgba(10,39,64,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,39,64,0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  /* ===== Navbar ===== */
+  #navbar{
+    transition: background-color .4s ease, box-shadow .4s ease, padding .3s ease;
+  }
+  #navbar.scrolled{
+    background-color: var(--deep-navy);
+    box-shadow: 0 6px 24px rgba(10,39,64,0.25);
+  }
+  .nav-link{
+    position:relative;
+    color:#F4F2EC;
+    transition:color .25s ease;
+  }
+  .nav-link::after{
+    content:'';
+    position:absolute;
+    right:0; bottom:-6px;
+    width:0; height:2px;
+    background:var(--sand-gold);
+    transition:width .3s ease;
+  }
+  .nav-link:hover::after{ width:100%; }
+  .nav-link:hover{ color:var(--sand-gold-light); }
+
+  /* ===== Hero ===== */
+  #hero{
+    background:
+      linear-gradient(160deg, rgba(10,39,64,0.85) 0%, rgba(10,39,64,0.55) 45%, rgba(18,58,92,0.55) 100%),
+      url('https://images.unsplash.com/photo-1605281317010-fe5ffe798166?auto=format&fit=crop&w=1800&q=80');
+    background-size:cover;
+    background-position:center;
+    min-height:100vh;
+  }
+
+  /* Signature element: drifting route line with a vessel marker */
+  .route-svg{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  .route-path{
+    fill:none;
+    stroke:rgba(244,242,236,0.35);
+    stroke-width:1.5;
+    stroke-dasharray:6 10;
+  }
+  .vessel-marker{
+    offset-rotate: 0deg;
+    animation: sailRoute 18s linear infinite;
+  }
+  @keyframes sailRoute{
+    0%{ offset-distance:0%; }
+    100%{ offset-distance:100%; }
+  }
+  .vessel-marker{
+    offset-path: path('M -50,420 C 250,520 550,260 950,340 S 1500,520 1750,300');
+  }
+
+  /* Wave divider */
+  .wave-divider{ display:block; width:100%; height:80px; }
+
+  /* ===== Sections ===== */
+  .section-eyebrow{
+    color:var(--sand-gold);
+    font-weight:700;
+    letter-spacing:.05em;
+  }
+
+  /* ===== Service cards ===== */
+  .service-card{
+    background:#ffffff;
+    border:1px solid rgba(10,39,64,0.08);
+    transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+  }
+  .service-card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(10,39,64,0.15);
+    border-color: var(--sand-gold);
+  }
+  .service-icon{
+    background: linear-gradient(135deg, var(--deep-navy), var(--mid-blue));
+    color:var(--sand-gold-light);
+    transition: transform .35s ease;
+  }
+  .service-card:hover .service-icon{ transform: rotate(-8deg) scale(1.08); }
+
+  /* ===== Gallery ===== */
+  .gallery-item{ overflow:hidden; position:relative; }
+  .gallery-item img{
+    transition: transform .6s ease, filter .6s ease;
+    filter: saturate(0.95);
+  }
+  .gallery-item:hover img{ transform: scale(1.12); filter: saturate(1.1); }
+  .gallery-caption{
+    position:absolute; inset:auto 0 0 0;
+    background: linear-gradient(0deg, rgba(10,39,64,0.85), transparent);
+    color:#fff;
+    transform: translateY(100%);
+    transition: transform .4s ease;
+  }
+  .gallery-item:hover .gallery-caption{ transform: translateY(0); }
+
+  /* ===== Buttons ===== */
+  .btn-gold{
+    background: var(--sand-gold);
+    color: var(--deep-navy);
+    font-weight:700;
+    transition: background .3s ease, transform .25s ease, box-shadow .3s ease;
+    box-shadow: 0 8px 20px rgba(201,151,74,0.0);
+  }
+  .btn-gold:hover{
+    background: var(--sand-gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(201,151,74,0.35);
+  }
+  .btn-outline{
+    border:1.5px solid var(--foam);
+    color:var(--foam);
+    transition: background .3s ease, color .3s ease;
+  }
+  .btn-outline:hover{ background: var(--foam); color: var(--deep-navy); }
+
+  /* ===== Form ===== */
+  .input-field{
+    background:#fff;
+    border:1px solid rgba(10,39,64,0.15);
+    transition: border-color .25s ease, box-shadow .25s ease;
+  }
+  .input-field:focus{
+    outline:none;
+    border-color: var(--sand-gold);
+    box-shadow: 0 0 0 3px rgba(201,151,74,0.2);
+  }
+
+  /* ===== Mobile menu ===== */
+  #mobile-menu{
+    max-height:0;
+    overflow:hidden;
+    transition: max-height .4s ease;
+  }
+  #mobile-menu.open{ max-height:420px; }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .vessel-marker{ animation:none; }
+    *{ transition-duration:.01ms !important; animation-duration:.01ms !important; }
+  }
+
+  /* Reveal on scroll */
+  .reveal{ opacity:0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:none; }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:3px solid var(--sand-gold);
+    outline-offset:2px;
+  }
+</style>
+</head>
+<body class="chart-grid">
+
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 px-5 md:px-10 py-4">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <a href="#hero" class="flex items-center gap-2 text-foam">
+      <i class="fa-solid fa-anchor text-2xl" style="color:var(--sand-gold-light)"></i>
+      <span class="font-display font-extrabold text-xl" style="color:#F4F2EC">الشركة البحرية</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8 font-display font-semibold">
+      <a href="#hero" class="nav-link">الرئيسية</a>
+      <a href="#about" class="nav-link">من نحن</a>
+      <a href="#services" class="nav-link">خدماتنا</a>
+      <a href="#projects" class="nav-link">مشاريعنا</a>
+      <a href="#contact" class="nav-link">اتصل بنا</a>
+    </div>
+
+    <a href="#contact" class="hidden md:inline-block btn-gold px-5 py-2.5 rounded-full font-display text-sm">اطلب خدماتنا</a>
+
+    <button id="menu-toggle" class="md:hidden text-foam text-2xl" aria-label="فتح القائمة" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="md:hidden mt-3">
+    <div class="flex flex-col gap-4 font-display font-semibold pb-4 pt-2 border-t border-white/10">
+      <a href="#hero" class="nav-link py-1">الرئيسية</a>
+      <a href="#about" class="nav-link py-1">من نحن</a>
+      <a href="#services" class="nav-link py-1">خدماتنا</a>
+      <a href="#projects" class="nav-link py-1">مشاريعنا</a>
+      <a href="#contact" class="nav-link py-1">اتصل بنا</a>
+      <a href="#contact" class="btn-gold text-center px-5 py-2.5 rounded-full text-sm">اطلب خدماتنا</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="hero" class="relative flex items-center text-foam">
+  <svg class="route-svg" viewBox="0 0 1700 600" preserveAspectRatio="none">
+    <path class="route-path" d="M -50,420 C 250,520 550,260 950,340 S 1500,520 1750,300"></path>
+    <g class="vessel-marker">
+      <circle r="5" fill="#C9974A"></circle>
+    </g>
+  </svg>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-10 pt-32 pb-24">
+    <p class="section-eyebrow font-display mb-4 text-sm md:text-base">شريككم البحري الموثوق منذ أول رحلة</p>
+    <h1 class="font-display font-black text-4xl md:text-6xl leading-tight max-w-3xl mb-6">
+      نقدم أفضل الخدمات البحرية واللوجستية بمعايير عالمية
+    </h1>
+    <p class="text-lg md:text-xl max-w-2xl text-foam/90 mb-10 leading-relaxed">
+      من الوكالة البحرية إلى التخليص الجمركي، نرافق سفنكم وشحناتكم في كل محطة بخبرة محلية ورؤية عالمية، لضمان وصول آمن وفي الوقت المحدد.
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <a href="#contact" class="btn-gold px-8 py-4 rounded-full font-display text-base">اطلب خدماتنا الآن</a>
+      <a href="#services" class="btn-outline px-8 py-4 rounded-full font-display text-base">تعرّف على خدماتنا</a>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6 mt-16 max-w-lg">
+      <div>
+        <p class="font-display font-extrabold text-3xl" style="color:var(--sand-gold-light)">+18</p>
+        <p class="text-sm text-foam/80">عاماً من الخبرة</p>
+      </div>
+      <div>
+        <p class="font-display font-extrabold text-3xl" style="color:var(--sand-gold-light)">+640</p>
+        <p class="text-sm text-foam/80">عملية بحرية</p>
+      </div>
+      <div>
+        <p class="font-display font-extrabold text-3xl" style="color:var(--sand-gold-light)">5</p>
+        <p class="text-sm text-foam/80">موانئ نخدمها</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+  <path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,40 L1440,80 L0,80 Z" fill="#F4F2EC"></path>
+</svg>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="py-24 px-6 md:px-10">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <div class="reveal order-2 md:order-1">
+      <p class="section-eyebrow font-display mb-3">من نحن</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl mb-6" style="color:var(--deep-navy)">
+        خبرة بحرية متكاملة تواكب حركة الموانئ المصرية
+      </h2>
+      <p class="leading-loose text-gray-700 mb-5">
+        تأسست الشركة البحرية لتكون حلقة الوصل بين خطوط الشحن العالمية والموانئ المحلية، حيث نقدم منظومة متكاملة من الخدمات البحرية واللوجستية تشمل الوكالة البحرية وصيانة وتموين السفن والشحن والتخليص الجمركي.
+      </p>
+      <p class="leading-loose text-gray-700 mb-8">
+        يعمل فريقنا من المهندسين البحريين والمخلصين الجمركيين على مدار الساعة لمتابعة كل سفينة وكل شحنة، بدءًا من لحظة الرسو وحتى تسليم البضائع، بما يضمن سرعة الإجراءات وخفض زمن الانتظار في الموانئ.
+      </p>
+      <div class="flex flex-wrap gap-x-8 gap-y-4">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-xl" style="color:var(--sand-gold)"></i>
+          <span class="font-display font-semibold">تغطية على مدار الساعة</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-xl" style="color:var(--sand-gold)"></i>
+          <span class="font-display font-semibold">فريق هندسي وجمركي معتمد</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-xl" style="color:var(--sand-gold)"></i>
+          <span class="font-display font-semibold">شبكة موانئ متعددة</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal order-1 md:order-2 relative">
+      <div class="rounded-2xl overflow-hidden shadow-2xl">
+        <img src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?auto=format&fit=crop&w=1000&q=80"
+             alt="سفينة شحن تجارية في الميناء" class="w-full h-[420px] object-cover">
+      </div>
+      <div class="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl px-6 py-4 hidden sm:block" style="border-right:4px solid var(--sand-gold)">
+        <p class="font-display font-extrabold text-2xl" style="color:var(--deep-navy)">24/7</p>
+        <p class="text-sm text-gray-600">دعم بحري متواصل</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="py-24 px-6 md:px-10" style="background:linear-gradient(180deg, #ffffff, #F4F2EC)">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <p class="section-eyebrow font-display mb-3">خدماتنا</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl mb-4" style="color:var(--deep-navy)">
+        منظومة خدمات بحرية تغطي رحلة سفينتكم كاملة
+      </h2>
+      <p class="text-gray-600 leading-relaxed">نرافقكم من لحظة الإبلاغ عن وصول السفينة وحتى تسليم آخر شحنة على الرصيف.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="service-card rounded-2xl p-7 reveal">
+        <div class="service-icon w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-6">
+          <i class="fa-solid fa-ship"></i>
+        </div>
+        <h3 class="font-display font-bold text-xl mb-3" style="color:var(--deep-navy)">الوكالة البحرية</h3>
+        <p class="text-gray-600 leading-relaxed text-sm">تمثيل ملاك السفن وخطوط الشحن أمام الموانئ والجهات الرسمية، وإنهاء كل إجراءات الرسو والمغادرة بسلاسة.</p>
+      </div>
+
+      <div class="service-card rounded-2xl p-7 reveal">
+        <div class="service-icon w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-6">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+        </div>
+        <h3 class="font-display font-bold text-xl mb-3" style="color:var(--deep-navy)">صيانة وتموين السفن</h3>
+        <p class="text-gray-600 leading-relaxed text-sm">فرق فنية متخصصة لصيانة المعدات البحرية وتوفير قطع الغيار والمؤن اللازمة لاستمرار رحلة السفينة.</p>
+      </div>
+
+      <div class="service-card rounded-2xl p-7 reveal">
+        <div class="service-icon w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-6">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <h3 class="font-display font-bold text-xl mb-3" style="color:var(--deep-navy)">الشحن اللوجستي</h3>
+        <p class="text-gray-600 leading-relaxed text-sm">حلول نقل بحري وبري متكاملة مع تتبّع دقيق للشحنات من ميناء التحميل حتى وجهتها النهائية.</p>
+      </div>
+
+      <div class="service-card rounded-2xl p-7 reveal">
+        <div class="service-icon w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-6">
+          <i class="fa-solid fa-file-circle-check"></i>
+        </div>
+        <h3 class="font-display font-bold text-xl mb-3" style="color:var(--deep-navy)">التخليص الجمركي</h3>
+        <p class="text-gray-600 leading-relaxed text-sm">إنهاء كافة المستندات والإجراءات الجمركية بدقة وسرعة، لتقليل وقت احتجاز البضائع داخل الميناء.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS / GALLERY ============ -->
+<section id="projects" class="py-24 px-6 md:px-10" style="background:var(--deep-navy)">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <p class="section-eyebrow font-display mb-3">مشاريعنا</p>
+      <h2 class="font-display font-extrabold text-3xl md:text-4xl text-foam mb-4">عمليات بحرية أنجزناها بثقة عملائنا</h2>
+      <p class="text-foam/75 leading-relaxed">لمحة من أحدث عملياتنا في الموانئ المصرية والإقليمية.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="gallery-item rounded-2xl reveal">
+        <img src="https://images.unsplash.com/photo-1521714161819-15534968fc5f?auto=format&fit=crop&w=800&q=80" alt="عمليات تحميل حاويات في الميناء" class="w-full h-72 object-cover">
+        <div class="gallery-caption p-5">
+          <h4 class="font-display font-bold text-foam">تحميل وتفريغ الحاويات</h4>
+          <p class="text-sm text-foam/80">ميناء الإسكندرية</p>
+        </div>
+      </div>
+
+      <div class="gallery-item rounded-2xl reveal">
+        <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=800&q=80" alt="رافعات الميناء وعمليات الشحن" class="w-full h-72 object-cover">
+        <div class="gallery-caption p-5">
+          <h4 class="font-display font-bold text-foam">إدارة عمليات الرصيف</h4>
+          <p class="text-sm text-foam/80">ميناء دمياط</p>
+        </div>
+      </div>
+
+      <div class="gallery-item rounded-2xl reveal">
+        <img src="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?auto=format&fit=crop&w=800&q=80" alt="سفينة شحن في عرض البحر" class="w-full h-72 object-cover">
+        <div class="gallery-caption p-5">
+          <h4 class="font-display font-bold text-foam">متابعة الرحلات البحرية</h4>
+          <p class="text-sm text-foam/80">البحر المتوسط</p>
+        </div>
+      </div>
+
+      <div class="gallery-item rounded-2xl reveal">
+        <img src="https://images.unsplash.com/photo-1591380228213-f06d09b0fed0?auto=format&fit=crop&w=800&q=80" alt="سفينة راسية في الميناء وقت الغروب" class="w-full h-72 object-cover">
+        <div class="gallery-caption p-5">
+          <h4 class="font-display font-bold text-foam">وكالة سفن الحاويات</h4>
+          <p class="text-sm text-foam/80">ميناء بورسعيد</p>
+        </div>
+      </div>
+
+      <div class="gallery-item rounded-2xl reveal">
+        <img src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?auto=format&fit=crop&w=800&q=80" alt="سفينة شحن تجارية كبيرة" class="w-full h-72 object-cover">
+        <div class="gallery-caption p-5">
+          <h4 class="font-display font-bold text-foam">صيانة بحرية طارئة</h4>
+          <p class="text-sm text-foam/80">ميناء السخنة</p>
+        </div>
+      </div>
+
+      <div class="gallery-item rounded-2xl reveal">
+        <img src="https://images.unsplash.com/photo-1530631282765-79a6e1abe69d?auto=format&fit=crop&w=800&q=80" alt="معدات الرفع في الميناء" class="w-full h-72 object-cover">
+        <div class="gallery-caption p-5">
+          <h4 class="font-display font-bold text-foam">تخليص جمركي سريع</h4>
+          <p class="text-sm text-foam/80">ميناء العين السخنة</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="py-24 px-6 md:px-10" style="background:#F4F2EC">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-5 gap-12">
+    <div class="md:col-span-2 reveal">
+      <p class="section-eyebrow font-display mb-3">اتصل بنا</p>
+      <h2 class="font-display font-extrabold text-3xl mb-6" style="color:var(--deep-navy)">نسعد بخدمة سفينتكم وشحنتكم</h2>
+      <p class="text-gray-600 leading-relaxed mb-10">فريقنا متاح للرد على استفساراتكم وتنسيق العمليات البحرية واللوجستية في أي وقت.</p>
+
+      <div class="space-y-6">
+        <div class="flex items-start gap-4">
+          <div class="w-11 h-11 rounded-lg flex items-center justify-center" style="background:var(--deep-navy); color:var(--sand-gold-light)">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div>
+            <p class="font-display font-semibold" style="color:var(--deep-navy)">العنوان</p>
+            <p class="text-gray-600 text-sm">المنطقة الحرة، طريق الميناء، الإسكندرية، مصر</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-11 h-11 rounded-lg flex items-center justify-center" style="background:var(--deep-navy); color:var(--sand-gold-light)">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div>
+            <p class="font-display font-semibold" style="color:var(--deep-navy)">الهاتف</p>
+            <p class="text-gray-600 text-sm" dir="ltr">+20 3 123 4567</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-11 h-11 rounded-lg flex items-center justify-center" style="background:var(--deep-navy); color:var(--sand-gold-light)">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <div>
+            <p class="font-display font-semibold" style="color:var(--deep-navy)">البريد الإلكتروني</p>
+            <p class="text-gray-600 text-sm" dir="ltr">info@maritime-co.example</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-11 h-11 rounded-lg flex items-center justify-center" style="background:var(--deep-navy); color:var(--sand-gold-light)">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div>
+            <p class="font-display font-semibold" style="color:var(--deep-navy)">أوقات العمل</p>
+            <p class="text-gray-600 text-sm">على مدار الساعة لخدمات الموانئ — المكاتب: السبت إلى الخميس، 9 صباحاً–6 مساءً</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="contact-form" class="md:col-span-3 bg-white rounded-2xl shadow-xl p-8 md:p-10 reveal" novalidate>
+      <div class="grid sm:grid-cols-2 gap-5 mb-5">
+        <div>
+          <label for="name" class="block font-display font-semibold mb-2 text-sm" style="color:var(--deep-navy)">الاسم</label>
+          <input id="name" name="name" type="text" required placeholder="اسمك الكامل" class="input-field w-full rounded-lg px-4 py-3 text-sm">
+        </div>
+        <div>
+          <label for="phone" class="block font-display font-semibold mb-2 text-sm" style="color:var(--deep-navy)">رقم الهاتف</label>
+          <input id="phone" name="phone" type="tel" required placeholder="01xxxxxxxxx" class="input-field w-full rounded-lg px-4 py-3 text-sm" dir="ltr">
+        </div>
+      </div>
+      <div class="mb-5">
+        <label for="email" class="block font-display font-semibold mb-2 text-sm" style="color:var(--deep-navy)">البريد الإلكتروني</label>
+        <input id="email" name="email" type="email" required placeholder="example@email.com" class="input-field w-full rounded-lg px-4 py-3 text-sm" dir="ltr">
+      </div>
+      <div class="mb-6">
+        <label for="message" class="block font-display font-semibold mb-2 text-sm" style="color:var(--deep-navy)">الرسالة</label>
+        <textarea id="message" name="message" rows="4" required placeholder="اكتب تفاصيل طلبكم هنا..." class="input-field w-full rounded-lg px-4 py-3 text-sm resize-none"></textarea>
+      </div>
+      <button type="submit" class="btn-gold w-full sm:w-auto px-10 py-3.5 rounded-full font-display">إرسال الطلب</button>
+      <p id="form-status" class="mt-4 text-sm font-display" style="display:none; color:var(--deep-navy)">
+        <i class="fa-solid fa-circle-check ml-2" style="color:var(--sand-gold)"></i>تم استلام طلبكم بنجاح، سيتواصل فريقنا معكم قريباً.
+      </p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer style="background:var(--deep-navy)" class="text-foam pt-16 pb-8 px-6 md:px-10">
+  <div class="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+    <div>
+      <div class="flex items-center gap-2 mb-4">
+        <i class="fa-solid fa-anchor text-xl" style="color:var(--sand-gold-light)"></i>
+        <span class="font-display font-extrabold text-lg">الشركة البحرية</span>
+      </div>
+      <p class="text-foam/70 text-sm leading-relaxed">شريككم الموثوق في الخدمات البحرية واللوجستية على مستوى الموانئ المصرية والإقليمية.</p>
+    </div>
+
+    <div>
+      <h5 class="font-display font-bold mb-4">روابط سريعة</h5>
+      <ul class="space-y-2 text-sm text-foam/75">
+        <li><a href="#hero" class="hover:text-[var(--sand-gold-light)]">الرئيسية</a></li>
+        <li><a href="#about" class="hover:text-[var(--sand-gold-light)]">من نحن</a></li>
+        <li><a href="#services" class="hover:text-[var(--sand-gold-light)]">خدماتنا</a></li>
+        <li><a href="#projects" class="hover:text-[var(--sand-gold-light)]">مشاريعنا</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h5 class="font-display font-bold mb-4">خدماتنا</h5>
+      <ul class="space-y-2 text-sm text-foam/75">
+        <li>الوكالة البحرية</li>
+        <li>صيانة وتموين السفن</li>
+        <li>الشحن اللوجستي</li>
+        <li>التخليص الجمركي</li>
+      </ul>
+    </div>
+
+    <div>
+      <h5 class="font-display font-bold mb-4">تابعونا</h5>
+      <div class="flex gap-3">
+        <a href="#" aria-label="فيسبوك" class="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 hover:bg-[var(--sand-gold)] hover:text-[var(--deep-navy)] transition"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="لينكدإن" class="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 hover:bg-[var(--sand-gold)] hover:text-[var(--deep-navy)] transition"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#" aria-label="إكس" class="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 hover:bg-[var(--sand-gold)] hover:text-[var(--deep-navy)] transition"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="واتساب" class="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 hover:bg-[var(--sand-gold)] hover:text-[var(--deep-navy)] transition"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto border-t border-white/10 pt-6 text-center text-sm text-foam/60">
+    2026 © الشركة البحرية - جميع الحقوق محفوظة
+  </div>
+</footer>
+
+<script>
+  // Sticky navbar background on scroll
+  const navbar = document.getElementById('navbar');
+  const onScroll = () => {
+    if (window.scrollY > 30) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuToggle.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', isOpen);
+    menuToggle.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+  });
+
+  // Close mobile menu after clicking a link
+  document.querySelectorAll('#mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', false);
+      menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    });
+  });
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Contact form submission (front-end only demo)
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('form-status');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    status.style.display = 'block';
+    form.reset();
+    setTimeout(() => { status.style.display = 'none'; }, 5000);
+  });
+</script>
+
+</body>
+</html>
